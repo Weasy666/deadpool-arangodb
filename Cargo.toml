@@ -1,0 +1,33 @@
+[package]
+name = "deadpool-arangodb"
+version = "0.1.0"
+edition = "2018"
+resolver = "2"
+authors = ["Daniel Wiesenberg <weasy@hotmail.de>"]
+description = "Dead simple async pool for ArangoDB"
+keywords = ["async", "arango", "arangodb", "pool"]
+license = "MIT/Apache-2.0"
+repository = "https://github.com/Weasy666/deadpool-arangodb"
+readme = "README.md"
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+[features]
+default = ["rt_tokio_1"]
+rt_tokio_1 = ["deadpool/rt_tokio_1", "arangors/reqwest_async"]
+rt_async-std_1 = ["deadpool/rt_async-std_1", "arangors/surf_async"]
+serde = ["deadpool/serde", "serde_1"]
+
+[dependencies]
+deadpool = { git = "https://github.com/bikeshedder/deadpool", default-features = false, features = ["managed"] }
+arangors = { git = "https://github.com/fMeow/arangors", default-features = false, features = ["rocksdb"] }
+serde_1 = { package = "serde", version = "1.0", features = ["derive"], optional = true }
+http = "0.2"
+
+[dev-dependencies]
+config = { version = "0.11", default-features = false }
+dotenv = "0.15.0"
+futures = "0.3"
+tokio = { version = "1.0", features = ["macros", "rt-multi-thread"] }
