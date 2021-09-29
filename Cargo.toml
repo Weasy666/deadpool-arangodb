@@ -24,7 +24,7 @@ serde = ["deadpool/serde", "serde_1"]
 deadpool = { git = "https://github.com/bikeshedder/deadpool", default-features = false, features = ["managed"] }
 arangors = { git = "https://github.com/fMeow/arangors", default-features = false, features = ["rocksdb"] }
 serde_1 = { package = "serde", version = "1.0", features = ["derive"], optional = true }
-http = "0.2"
+url = "2.2"
 
 [dev-dependencies]
 config = { version = "0.11", default-features = false }

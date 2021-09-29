@@ -32,6 +32,7 @@ use deadpool::{async_trait, managed};
 
 pub use arangors;
 pub use deadpool::managed::reexports::*;
+use url::Url;
 
 pub use self::config::Config;
 
@@ -149,10 +150,11 @@ impl managed::Manager for Manager {
     }
 
     async fn recycle(&self, conn: &mut ArangoConnection) -> RecycleResult {
+        let url = Url::parse(&self.url).expect("Url should be valid at this point");
         conn.session()
             // I don't know if this is the correct way to do it, but TRACE should allow us to check if the connection is still open,
             // if the server answers it's open, if not, then not.
-            .request(http::Request::trace(&self.url).body(String::new()).unwrap())
+            .trace(url, String::default())
             .await
             .map(|_| ())
             .map_err(|e| managed::RecycleError::Backend(ClientError::HttpClient(e)))
