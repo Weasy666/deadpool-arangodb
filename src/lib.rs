@@ -32,6 +32,7 @@ use deadpool::{async_trait, managed};
 
 pub use arangors;
 pub use deadpool::managed::reexports::*;
+pub use deadpool::managed::BuildError;
 use url::Url;
 
 pub use self::config::Config;
@@ -122,11 +123,11 @@ impl Manager {
     }
 
     /// Creates a new [`Manager`] with the given params.
-    pub fn from_config(config: Config) -> Result<Self, managed::BuildError<ClientError>> {
+    pub fn from_config(config: Config) -> Result<Self, BuildError<ClientError>> {
         Ok(Self {
-            url: config.url.ok_or(managed::BuildError::Config("url must be specified.".into()))?,
-            username: config.username.ok_or(managed::BuildError::Config("username must be specified.".into()))?,
-            password: config.password.ok_or(managed::BuildError::Config("password must be specified.".into()))?,
+            url: config.url.ok_or(BuildError::Config("url must be specified.".into()))?,
+            username: config.username.ok_or(BuildError::Config("username must be specified.".into()))?,
+            password: config.password.ok_or(BuildError::Config("password must be specified.".into()))?,
             use_jwt: config.use_jwt,
         })
     }
